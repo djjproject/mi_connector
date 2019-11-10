@@ -33,9 +33,8 @@ metadata {
 	definition (name: "Xiaomi Light Mono", namespace: "fison67", author: "fison67") {
         capability "Switch"						//"on", "off"
         capability "Actuator"
-        capability "Configuration"
         capability "Refresh"
-		capability "Color Control"
+		capability "ColorTemperature"
         capability "Switch Level"
         capability "Light"
         
@@ -56,8 +55,8 @@ metadata {
 	tiles(scale: 2) {
 		multiAttributeTile(name:"switch", type: "lighting", width: 6, height: 4, canChangeIcon: true){
 			tileAttribute ("device.switch", key: "PRIMARY_CONTROL") {
-                attributeState "on", label:'\n${name}', action:"switch.off", icon:"https://postfiles.pstatic.net/MjAxODAzMjdfMTU5/MDAxNTIyMTUzOTk3MTgy.j2vWDdDUen5w1lVKthaUgjRTk8EU0X1DTzLkIurRAyMg.Me30JNZPejyeC_GrQ1rffZvzaiUWYxHjLCyVkMjGCHYg.PNG.shin4299/Yeelight_mo_tile_on.png?type=w580", backgroundColor:"#00a0dc", nextState:"turningOff"
-                attributeState "off", label:'\n${name}', action:"switch.on", icon:"https://postfiles.pstatic.net/MjAxODAzMjdfNTAg/MDAxNTIyMTUzOTk3MTcy.XnqpwsxugesLmLzedrSispSEYs8dm3M18Y_UAx5M1icg.XC0qikMbzjwWsl_gQnSoQUnFwzsT78q-9rihSuWvVGEg.PNG.shin4299/Yeelight_mo_tile_off.png?type=w580", backgroundColor:"#ffffff", nextState:"turningOn"
+                attributeState "on", label:'${name}', action:"switch.off", icon:"https://postfiles.pstatic.net/MjAxODAzMjdfMTU5/MDAxNTIyMTUzOTk3MTgy.j2vWDdDUen5w1lVKthaUgjRTk8EU0X1DTzLkIurRAyMg.Me30JNZPejyeC_GrQ1rffZvzaiUWYxHjLCyVkMjGCHYg.PNG.shin4299/Yeelight_mo_tile_on.png?type=w580", backgroundColor:"#00a0dc", nextState:"turningOff"
+                attributeState "off", label:'${name}', action:"switch.on", icon:"https://postfiles.pstatic.net/MjAxODAzMjdfNTAg/MDAxNTIyMTUzOTk3MTcy.XnqpwsxugesLmLzedrSispSEYs8dm3M18Y_UAx5M1icg.XC0qikMbzjwWsl_gQnSoQUnFwzsT78q-9rihSuWvVGEg.PNG.shin4299/Yeelight_mo_tile_off.png?type=w580", backgroundColor:"#ffffff", nextState:"turningOn"
                 
                 attributeState "turningOn", label:'\n${name}', action:"switch.off", icon:"https://postfiles.pstatic.net/MjAxODAzMjdfNTAg/MDAxNTIyMTUzOTk3MTcy.XnqpwsxugesLmLzedrSispSEYs8dm3M18Y_UAx5M1icg.XC0qikMbzjwWsl_gQnSoQUnFwzsT78q-9rihSuWvVGEg.PNG.shin4299/Yeelight_mo_tile_off.png?type=w580", backgroundColor:"#00a0dc", nextState:"turningOff"
                 attributeState "turningOff", label:'\n${name}', action:"switch.ofn", icon:"https://postfiles.pstatic.net/MjAxODAzMjdfMTU5/MDAxNTIyMTUzOTk3MTgy.j2vWDdDUen5w1lVKthaUgjRTk8EU0X1DTzLkIurRAyMg.Me30JNZPejyeC_GrQ1rffZvzaiUWYxHjLCyVkMjGCHYg.PNG.shin4299/Yeelight_mo_tile_on.png?type=w580", backgroundColor:"#ffffff", nextState:"turningOn"
@@ -71,20 +70,7 @@ metadata {
             tileAttribute ("device.level", key: "SLIDER_CONTROL") {
                 attributeState "level", action:"switch level.setLevel"
             }
-            tileAttribute ("device.color", key: "COLOR_CONTROL") {
-                attributeState "color", action:"setColor"
-            }
 		}
-		multiAttributeTile(name:"switch2", type: "lighting"){
-			tileAttribute ("device.switch", key: "PRIMARY_CONTROL") {
-                attributeState "on", label:'ON', action:"switch.off", icon:"https://postfiles.pstatic.net/MjAxODAzMjdfMTk4/MDAxNTIyMTUzOTk3MTY1.PJymTUZE8iMBPumZzoG_l0WgKTgqMJccUKBTy3-etrMg.2AdvU9rFVJH0_v6NogrZPCwv-NtqeB5oBqHSqaVoYfgg.PNG.shin4299/Yeelight_mo_main_on.png?type=w580", backgroundColor:"#00a0dc", nextState:"turningOff"
-                attributeState "off", label:'OFF', action:"switch.on", icon:"https://postfiles.pstatic.net/MjAxODAzMjdfMjU0/MDAxNTIyMTUzOTk3MTU1.ihvsjIGETKpfERltO0G-QgqHG7zls-jxzwrnCx3ivYog.uR77SPI-Dcs40NigVqpeYfMfL4HwJY9C1gcQwbbnmwYg.PNG.shin4299/Yeelight_mo_main_off.png?type=w580", backgroundColor:"#ffffff", nextState:"turningOn"
-                
-                attributeState "turningOn", label:'${name}', action:"switch.off", icon:"https://postfiles.pstatic.net/MjAxODAzMjdfMjU0/MDAxNTIyMTUzOTk3MTU1.ihvsjIGETKpfERltO0G-QgqHG7zls-jxzwrnCx3ivYog.uR77SPI-Dcs40NigVqpeYfMfL4HwJY9C1gcQwbbnmwYg.PNG.shin4299/Yeelight_mo_main_off.png?type=w580", backgroundColor:"#00a0dc", nextState:"turningOff"
-                attributeState "turningOff", label:'${name}', action:"switch.ofn", icon:"https://postfiles.pstatic.net/MjAxODAzMjdfMTk4/MDAxNTIyMTUzOTk3MTY1.PJymTUZE8iMBPumZzoG_l0WgKTgqMJccUKBTy3-etrMg.2AdvU9rFVJH0_v6NogrZPCwv-NtqeB5oBqHSqaVoYfgg.PNG.shin4299/Yeelight_mo_main_on.png?type=w580", backgroundColor:"#ffffff", nextState:"turningOn"
-
-			}
-        }
         valueTile("refresh", "device.refresh", width: 2, height: 2, decoration: "flat") {
             state "default", label:'', action:"refresh", icon:"st.secondary.refresh"
         }        
@@ -101,8 +87,12 @@ metadata {
             state "default", label:'${currentValue}'
         }
         
-   	main (["switch2"])
-	details(["switch", "refresh", "lastOn_label", "lastOn", "lastOff_label","lastOff" ])       
+        controlTile("colorTemperature", "device.colorTemperature", "slider", height: 2, width: 2, range:"(2700..6500)") {
+	    	state "colorTemperature", action:"setColorTemperature"
+		}
+        
+        main (["switch"])
+        details(["switch", "refresh", "lastOn_label", "lastOn", "lastOff_label","lastOff", "colorTemperature" ])       
 	}
 }
 
@@ -121,10 +111,8 @@ def setStatus(params){
 	log.debug "${params.key} >> ${params.data}"
     def now = new Date().format("yyyy-MM-dd HH:mm:ss", location.timeZone)
  	switch(params.key){
-    case "color":
-    	def colors = params.data.split(",")
-        String hex = String.format("#%02x%02x%02x", colors[0].toInteger(), colors[1].toInteger(), colors[2].toInteger())
-    	sendEvent(name:"color", value: hex )
+    case "colorTemperature":
+    	sendEvent(name:"colorTemperature", value: params.data as int)
     	break;
     case "power":
         if(params.data == "true"){
@@ -136,10 +124,10 @@ def setStatus(params){
         }
     	break;
     case "brightness":
-    	sendEvent(name:"level", value: params.data )
+    	sendEvent(name:"level", value: params.data as int)
     	break;
     }
-    sendEvent(name: "lastCheckin", value: now)
+    sendEvent(name: "lastCheckin", value: now, displayed: false)
 }
 
 def refresh(){
@@ -148,7 +136,7 @@ def refresh(){
      	"method": "GET",
         "path": "/devices/get/${state.id}",
         "headers": [
-        	"HOST": state.app_url,
+        	"HOST": parent._getServerURL(),
             "Content-Type": "application/json"
         ]
     ]
@@ -167,16 +155,24 @@ def setLevel(brightness){
     sendCommand(options, null)
 }
 
-def setColor(color){
-	log.debug "setColor >> ${state.id} >> ${color.hex}"
+def setColorTemperature(_colortemperature){
+	def colortemperature = _colortemperature
+	if(colortemperature < 2700){
+    	colortemperature = 2700
+    }else if(colortemperature > 6500){
+    	colortemperature = 6500
+    }
+    
     def body = [
         "id": state.id,
         "cmd": "color",
-        "data": color.hex,
+        "data": colortemperature + "K",
         "subData": getDuration()
     ]
     def options = makeCommand(body)
     sendCommand(options, null)
+    
+    setPowerByStatus(true)	
 }
 
 def on(){
@@ -208,9 +204,7 @@ def callback(physicalgraph.device.HubResponse hubResponse){
         msg = parseLanMessage(hubResponse.description)
 		def jsonObj = new JsonSlurper().parseText(msg.body)
         
-        def colorRGB = colorTemperatureToRGB(jsonObj.state.colorTemperature)
-        String hex = String.format("#%02x%02x%02x", (int)colorRGB[0], (int)colorRGB[1], (int)colorRGB[2]);  
-    	sendEvent(name:"color", value: hex )
+    	sendEvent(name:"color", value: jsonObj.state.colorTemperature )
         sendEvent(name:"level", value: jsonObj.properties.brightness)
         sendEvent(name:"switch", value: jsonObj.properties.power == true ? "on" : "off")
 	    
@@ -234,7 +228,7 @@ def makeCommand(body){
      	"method": "POST",
         "path": "/control",
         "headers": [
-        	"HOST": state.app_url,
+        	"HOST": parent._getServerURL(),
             "Content-Type": "application/json"
         ],
         "body":body

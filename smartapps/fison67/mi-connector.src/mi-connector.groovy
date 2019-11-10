@@ -1,5 +1,5 @@
 /**
- *  Mi Connector (v.0.0.26)
+ *  Mi Connector (v.0.0.33)
  *
  * MIT License
  *
@@ -56,9 +56,9 @@ def mainPage() {
 	def languageList = ["English", "Korean"]
     dynamicPage(name: "mainPage", title: "Mi Connector", nextPage: null, uninstall: true, install: true) {
    		section("Request New Devices"){
-        	input "address", "string", title: "Server address", required: true
+        	input "address", "text", title: "Server address", required: true, description:"ex)192.168.0.100:30000"
             input(name: "selectedLang", title:"Select a language" , type: "enum", required: true, options: languageList, defaultValue: "English", description:"Language for DTH")
-            input "externalAddress", "string", title: "External network address", required: false
+            input "externalAddress", "text", title: "External network address", required: false
         	href url:"http://${settings.address}", style:"embedded", required:false, title:"Local Management", description:"This makes you easy to setup"
         	href url:"http://${settings.externalAddress}", style:"embedded", required:false, title:"External Management", description:"This makes you easy to setup"
         }
@@ -216,6 +216,9 @@ def installed() {
 def updated() {
     log.debug "Updated with settings: ${settings}"
 
+	if(settings.address.split(":").size() != 2){
+    	throw new Exception("Address must be with port number!!!.");
+    }
     // Unsubscribe from all events
 //    unsubscribe()
     // Subscribe to stuff
@@ -375,7 +378,7 @@ def addDevice(){
         def dth = null
         def name = null
 
-        if(params.type == "zhimi.airpurifier.m1" || params.type == "zhimi.airpurifier.v1" || params.type == "zhimi.airpurifier.v2" || params.type ==  "zhimi.airpurifier.v3" || params.type ==  "zhimi.airpurifier.v6" || params.type ==  "zhimi.airpurifier.v7" || params.type ==  "zhimi.airpurifier.m2" || params.type ==  "zhimi.airpurifier.ma2" || params.type ==  "zhimi.airpurifier.mc1"){
+        if(params.type == "zhimi.airpurifier.m1" || params.type == "zhimi.airpurifier.v1" || params.type == "zhimi.airpurifier.v2" || params.type ==  "zhimi.airpurifier.v3" || params.type ==  "zhimi.airpurifier.v6" || params.type ==  "zhimi.airpurifier.v7" || params.type ==  "zhimi.airpurifier.m2" || params.type ==  "zhimi.airpurifier.ma2" || params.type ==  "zhimi.airpurifier.mc1" || params.type == "zhimi.airpurifier.sa2"){
         	dth = "Xiaomi Air Purifier";
             name = "Xiaomi Air Purifier";
         }else if(params.type == "lumi.gateway.v2"){
@@ -432,10 +435,10 @@ def addDevice(){
         }else if(params.type == "philips.light.moonlight"){
         	dth = "Xiaomi Philips Bedside Lamp";
             name = "Xiaomi Philips Bedside Lamp";
-        }else if(params.type == "rockrobo.vacuum.v1" || params.type == "roborock.vacuum.c1" || params.type == "roborock.vacuum.m1s"){
+        }else if(params.type == "rockrobo.vacuum.v1" || params.type == "roborock.vacuum.c1" || params.type == "roborock.vacuum.m1s" || params.type == "roborock.vacuum.s6" || params.type == "viomi.vacuum.v7"){
         	dth = "Xiaomi Vacuums";
             name = "Xiaomi Vacuums";
-        }else if(params.type == "roborock.vacuum.s5"){
+        }else if(params.type == "roborock.vacuum.s5" || params.type == "roborock.vacuum.s6"){
         	dth = "Xiaomi Vacuums2";
             name = "Xiaomi Vacuums2";
         }else if(params.type == "qmi.powerstrip.v1" || params.type == "zimi.powerstrip.v2"){
@@ -480,6 +483,9 @@ def addDevice(){
         }else if(params.type == "lumi.curtain"){
         	dth = "Xiaomi Curtain";
             name = "Xiaomi Curtain";
+        }else if(params.type == "lumi.curtain.b1"){
+        	dth = "Xiaomi Curtain2";
+            name = "Xiaomi Curtain B1";
         }else if(params.type == "lumi.water"){
 			dth = "Xiaomi Water Detector";
             name = "Xiaomi Water Dectector";
@@ -525,7 +531,10 @@ def addDevice(){
         }else if(params.type == "air.fan.ca23ad9"){
         	dth = "Xiaomi Circulator"
             name = "Xiaomi Circulator"
-        }
+        }else if(params.type == "nwt.derh.wdh318efw1"){
+        	dth = "Xiaomi Dehumidifier"
+            name = "Xiaomi Dehumidifier"
+        }	
         
         
         if(dth == null){
@@ -609,6 +618,10 @@ def addDevice(){
     	}
     }
     
+}
+
+def _getServerURL(){
+     return settings.address
 }
 
 def updateDevice(){

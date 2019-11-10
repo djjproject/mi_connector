@@ -1,5 +1,5 @@
 /**
- *  Xiaomi Curtain (v.0.0.3)
+ *  Xiaomi Curtain2 (v.0.0.1)
  *
  * MIT License
  *
@@ -30,12 +30,13 @@
 import groovy.json.JsonSlurper
 
 metadata {
-	definition (name: "Xiaomi Curtain", namespace: "fison67", author: "fison67", vid: "SmartThings-smartthings-Springs_Window_Fashions_Shade", ocfDeviceType: "oic.d.blind") {
+	definition (name: "Xiaomi Curtain2", namespace: "fison67", author: "fison67", vid: "SmartThings-smartthings-Springs_Window_Fashions_Shade", ocfDeviceType: "oic.d.blind") {
         capability "Actuator"		
         capability "Door Control"
         capability "Switch Level"
         capability "windowShade"
         capability "Switch"
+        capability "Battery"
         capability "Refresh"
          
         attribute "lastCheckin", "Date"
@@ -79,9 +80,14 @@ metadata {
             state("off", label: 'close', action: "close", icon: "st.doors.garage.garage-closed")
         }
         
+        valueTile("battery", "device.battery", decoration: "flat", width: 2, height: 2) {
+            state "default", label:'${currentValue}%'
+        }
+        
         standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
             state "default", label:"", action:"refresh", icon:"st.secondary.refresh"
         }
+        
 	}
 }
 
@@ -101,9 +107,12 @@ def setStatus(params){
     
  	switch(params.key){
     case "curtainLevel":
-    	sendEvent(name:"level", value: params.data )
+    	sendEvent(name:"level", value: params.data as int)
         sendEvent(name:"windowShade", value: (params.data == "0" ? "closed" : ( params.data == "100" ? "open" : "partially open" )) )
     	break;
+    case "batteryLevel":
+        sendEvent(name:"battery", value: params.data as int)
+        break
     }
     
     updateLastTime()
@@ -179,8 +188,9 @@ def callback(physicalgraph.device.HubResponse hubResponse){
     try {
         msg = parseLanMessage(hubResponse.description)
 		def jsonObj = new JsonSlurper().parseText(msg.body)
-	
+        log.debug jsonObj
         sendEvent(name:"level", value: jsonObj.state.curtainLevel)
+        sendEvent(name:"battery", value: jsonObj.properties.batteryLevel)
        
         updateLastTime()
     } catch (e) {

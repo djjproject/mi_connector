@@ -57,7 +57,7 @@ metadata {
 
 	preferences {
 		input name:"mode", type:"enum", title:"Alarm Setthing?", options:["Both", "Siren", "Strobe"], description:"What will you do when you turn on?"
-		input name:"selectedColor", type:"string", title:"Strobe Color", description:"Type a color (Hex Value)"
+		input name:"selectedColor", type:"text", title:"Strobe Color", description:"Type a color (Hex Value)"
 		input name:"selectedBrightness", type:"number", title:"Strobe Brightness", range: "0..100", defaultValue:100, description:""
 		input name:"volume", type:"number", title:"Siren Volume", range: "0..100", defaultValue:10, description:"Gateway Siren Volume(0 ~ 100)"
 		input name:"alarm", type:"enum", title:"Siren Type", required: false, options: ["Police Car#1", "Police Car#2", "Accident", "Count Down", "Ghost", "Sniper Rifle", "Battle", 
@@ -369,7 +369,7 @@ def refresh(){
      	"method": "GET",
         "path": "/devices/get/${state.id}",
         "headers": [
-        	"HOST": state.app_url,
+        	"HOST": parent._getServerURL(),
             "Content-Type": "application/json"
         ]
     ]
@@ -413,7 +413,7 @@ def makeCommand(body){
      	"method": "POST",
         "path": "/control",
         "headers": [
-        	"HOST": state.app_url,
+        	"HOST": parent._getServerURL(),
             "Content-Type": "application/json"
         ],
         "body":body
@@ -463,7 +463,7 @@ def findChild(){
      	"method": "GET",
         "path": "/devices/gateway/${state.id}/findChild",
         "headers": [
-        	"HOST": state.app_url,
+        	"HOST": parent._getServerURL(),
             "Content-Type": "application/json"
         ]
     ]
